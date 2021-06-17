@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.rsschool.quiz.FragmentList.Companion.fragmentList
 import com.rsschool.quiz.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() , QuizFragment.FragmentAction{
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() , QuizFragment.FragmentAction{
 
     override fun previousAction() {
         --viewPager2.currentItem
+    }
+
+    override fun pageCount():Int? {
+        return viewPager2.adapter?.itemCount
     }
 }
 

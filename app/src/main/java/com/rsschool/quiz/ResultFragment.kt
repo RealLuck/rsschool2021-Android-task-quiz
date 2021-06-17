@@ -23,10 +23,9 @@ class ResultFragment: Fragment() {
 
 
     companion object {
-        fun newInstance(result:Int,theme:Int): ResultFragment {
+        fun newInstance(result:Int): ResultFragment {
             val fragment = ResultFragment()
             val args = Bundle()
-            args.putInt(THEME, theme)
             args.putInt(RESULT, result)
             fragment.arguments = args
             return fragment

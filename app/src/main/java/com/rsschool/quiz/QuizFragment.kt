@@ -20,6 +20,7 @@ class QuizFragment: Fragment() {
     open interface FragmentAction {
         fun nextAction()
         fun previousAction()
+        fun pageCount():Int?
     }
 
     override fun onAttach(context: Context) {
@@ -50,7 +51,8 @@ class QuizFragment: Fragment() {
     }
 
     companion object {
-        fun newInstance(page: Int, theme: Int): QuizFragment {
+        fun newInstance(page: Int, theme:
+        Int): QuizFragment {
             val fragment = QuizFragment()
             val args = Bundle()
             args.putInt(THEME, theme)
