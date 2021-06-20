@@ -1,42 +1,71 @@
 package com.rsschool.quiz
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.rsschool.quiz.databinding.FragmentQuizBinding
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
+import com.rsschool.quiz.databinding.FragmentResultBinding
+import kotlin.system.exitProcess
 
 class ResultFragment: Fragment() {
 
-    private var binding: FragmentQuizBinding?= null
-    private val _binding get() = binding!!
+    private var _binding: FragmentResultBinding?= null
+    private val binding get() = _binding!!
+    private val args: ResultFragmentArgs by navArgs()
+    private var answersList = intArrayOf()
+    private lateinit var thisQuestionsList: ArrayList<QuestionsRepo>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val theme = arguments?.getInt(ResultFragment.THEME) ?: 0
-        binding= FragmentQuizBinding.inflate(inflater,container,false)
-        return _binding.root
-    }
 
+        _binding= FragmentResultBinding.inflate(inflater,container,false)
+        answersList = args.answersArray
+        thisQuestionsList = QuestionsData.getQuestions()
+        binding.apply {
 
-    companion object {
-        fun newInstance(result:Int): ResultFragment {
-            val fragment = ResultFragment()
-            val args = Bundle()
-            args.putInt(RESULT, result)
-            fragment.arguments = args
-            return fragment
+            textViewResult.text = "Result: ${resultCount()}%"
+
+            exitButton.setOnClickListener {
+                activity?.finish();
+                exitProcess(-1)
+            }
+
+            backButton.setOnClickListener {
+                val thisAnswersList: IntArray = intArrayOf(-1, -1, -1, -1, -1)
+                    view?.findNavController()
+                        ?.navigate(ResultFragmentDirections.
+                        actionResultFragmentToQuizFragment(thisAnswersList, 0))
+            }
+        }
+            return binding.root
         }
 
-        private const val RESULT = "PAGE"
-        private const val THEME = "THEME"
+
+
+    private fun resultCount(): Int {
+        var resultCount = 0.0
+        for (i in answersList.indices)
+        {
+            if (answersList[i] == thisQuestionsList[i].correctAnswer)
+                resultCount++
+
+        }
+        val result = (resultCount/5.0)*100
+        return result.toInt()
     }
 
+
+
     override fun onDestroyView() {
-        binding = null
+        _binding = null
         super.onDestroyView()
     }
 }

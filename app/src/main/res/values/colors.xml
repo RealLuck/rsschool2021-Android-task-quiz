@@ -18,5 +18,10 @@
     <color name="deep_purple_100_light">#fff7ff</color>
     <color name="deep_purple_100_dark">#a094b7</color>
     <color name="red">#FF0000</color>
-    <color name="aqua">#00FFFF</color>
+    <color name="red_light">@android:color/holo_red_light</color>
+    <color name="red_dark">@android:color/holo_red_dark</color>
+    <color name="aqua">@android:color/holo_blue_bright</color>
+    <color name="aqua_light">@android:color/holo_blue_light</color>
+    <color name="aqua_dark">@android:color/holo_blue_dark</color>
+    <color name="green">#3DDC84</color>
 </resources>
