@@ -46,8 +46,13 @@ class QuizFragment: Fragment() {
 
         binding.apply {
 
-            toolbar.setNavigationOnClickListener {
-                previous()
+
+            if (currentQuestion != 0) {
+                toolbar.setNavigationOnClickListener {
+                    previous()
+                }
+            } else {
+                toolbar.navigationIcon = null
             }
 
             radioGroup.setOnCheckedChangeListener { _, _ ->

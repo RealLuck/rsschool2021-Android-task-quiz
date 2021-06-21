@@ -1,5 +1,6 @@
 package com.rsschool.quiz
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -44,6 +45,30 @@ class ResultFragment: Fragment() {
                         ?.navigate(ResultFragmentDirections.
                         actionResultFragmentToQuizFragment(thisAnswersList, 0))
             }
+
+            shareButton.setOnClickListener {
+                val sendIntent = Intent()
+                var questionNumber = 1
+                var thisAnswer = 0
+                val msg = StringBuilder("")
+                msg.apply {
+                    append("Your result: ${resultCount()}%\n\n")
+                    for (question in thisQuestionsList) {
+                        append(
+                            "${questionNumber++}) ${question.question}\n" +
+                                    "Your answer: ${question.answers?.get(answersList[thisAnswer++])} \n\n"
+                                )
+                            }
+                }.toString()
+
+                    sendIntent.action = Intent.ACTION_SEND
+                    sendIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "${msg}"
+                    )
+                    sendIntent.type = "text/plain"
+                    startActivity(sendIntent)
+            }
         }
             return binding.root
         }
@@ -58,7 +83,7 @@ class ResultFragment: Fragment() {
                 resultCount++
 
         }
-        val result = (resultCount/5.0)*100
+        val result = (resultCount/answersList.size)*100
         return result.toInt()
     }
 
