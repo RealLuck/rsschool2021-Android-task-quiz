@@ -34,19 +34,23 @@ class QuizFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // достаю из аргументов номер текущего вопроса
         currentQuestion = args.currentQuestion
+        // применяю тему
         setTheme()
         _binding = FragmentQuizBinding.inflate(inflater,container,false)
+        // достаю список всех вопросов
         thisQuestionsList = QuestionsData.getQuestions()
         answersArray = args.answersArray
         showQuestion(answersArray[currentQuestion])
+        // системная кнопка назад
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             previous()
         }
 
         binding.apply {
 
-
+            // кнопка назад в навбаре + проверка когда ее не показывать
             if (currentQuestion != 0) {
                 toolbar.setNavigationOnClickListener {
                     previous()
@@ -54,7 +58,7 @@ class QuizFragment: Fragment() {
             } else {
                 toolbar.navigationIcon = null
             }
-
+            // логика доступности кнопки далее
             radioGroup.setOnCheckedChangeListener { _, _ ->
                 binding.nextButton.isEnabled = true
             }
@@ -62,7 +66,7 @@ class QuizFragment: Fragment() {
             if (radioGroup.checkedRadioButtonId != -1) {
                 binding.nextButton.isEnabled = true
             }
-
+            // логика доступности кнопки предыдущий
             if (currentQuestion == 0) {
                 binding.previousButton.isEnabled = false
             }
@@ -70,7 +74,7 @@ class QuizFragment: Fragment() {
             previousButton.setOnClickListener {
                 previous()
             }
-
+            // логика кнопки далее: проверка ,что это не последниц вопрос и передача аргументов
             nextButton.setOnClickListener {
 
                 if (currentQuestion != QuestionsData.getQuestions().size - 1) {
@@ -84,7 +88,7 @@ class QuizFragment: Fragment() {
                             )
                         )
 
-                    } else Toast.makeText(requireContext(), "Check answer", Toast.LENGTH_SHORT).show()
+                    } else Toast.makeText(requireContext(), "Как ты это сделал?", Toast.LENGTH_SHORT).show()
                 } else {
                     getNumberOfAnswers()
                     answersArray?.set(currentQuestion, thisSelectedOptionPosition)
@@ -96,7 +100,7 @@ class QuizFragment: Fragment() {
         }
         return binding.root
     }
-
+    // логика выбора темы и покраса статус бара от номера вопроса + проверка на темную тему
     private fun setTheme() {
         val theme: Int
         val color: Int
@@ -127,12 +131,12 @@ class QuizFragment: Fragment() {
             Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES) {
             requireActivity().window.statusBarColor =
                 ContextCompat.getColor(requireActivity(), R.color.black)
-        }else {
+        } else {
             requireActivity().window.statusBarColor =
                 ContextCompat.getColor(requireActivity(), color)
         }
     }
-
+    // логика кнопки назада/предыдущий
     private fun previous() {
         if (currentQuestion != 0) {
             currentQuestion--
@@ -142,7 +146,7 @@ class QuizFragment: Fragment() {
             )
         }
     }
-
+    // отрисовка данныхЖ вопросы, варианты ответов , заголовок, кнопки
     private fun showQuestion(answer: Int?) {
         binding.radioGroup.clearCheck()
         val question = thisQuestionsList!![currentQuestion]
@@ -168,7 +172,7 @@ class QuizFragment: Fragment() {
             }
         }
     }
-
+    // запоминаем ответы
     private fun getNumberOfAnswers() {
         thisSelectedOptionPosition = binding.radioGroup.checkedRadioButtonId
 
@@ -194,6 +198,7 @@ class QuizFragment: Fragment() {
             }
         }
     }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()

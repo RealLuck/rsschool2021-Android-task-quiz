@@ -20,7 +20,9 @@ class SplashFragment : Fragment() {
     ): View? {
         requireActivity().window.statusBarColor = ContextCompat.getColor(requireActivity(), R.color.green)
         _binding = FragmentSplashBinding.inflate(inflater, container, false)
+        // инициализирую массив с ответами
         val thisAnswersList: IntArray = intArrayOf(-1, -1, -1, -1, -1)
+        // передаю дефолтные значения аргументов
         Handler(Looper.getMainLooper()).postDelayed({
             view?.findNavController()
                 ?.navigate(SplashFragmentDirections.actionSplashFragmentToQuizFragment(thisAnswersList, 0))

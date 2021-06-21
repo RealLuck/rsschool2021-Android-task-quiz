@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
     }
-
+// Кнопка назад в навбаре
     override fun onSupportNavigateUp(): Boolean {
         val navController = this.findNavController(R.id.fragmentContainerView)
         return navController.navigateUp()
